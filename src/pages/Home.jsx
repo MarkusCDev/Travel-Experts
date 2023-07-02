@@ -1,5 +1,6 @@
 import React from "react";
 import { useUserAuth } from "../components/UserAuth";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { user, logOut } = useUserAuth();
@@ -24,6 +25,7 @@ const Home = () => {
     <div>
       <h1>Welcome User!</h1>
       <button onClick={handleLogOut}>LogOut</button>
+      <button><Link to="/blogs">Blogs</Link></button>
     </div>
   );
 };
