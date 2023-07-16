@@ -3,7 +3,7 @@ import { storage, db } from '../firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
 import { useUserAuth } from '../components/UserAuth'
-import { collection, addDoc, updateDoc, doc, onSnapshot } from 'firebase/firestore'
+import { collection, addDoc, updateDoc, doc, onSnapshot, arrayUnion } from 'firebase/firestore'
 
 const Blogs = () => {
   const [imgUpload, setImgUpload] = useState(null)
@@ -12,6 +12,8 @@ const Blogs = () => {
   const [blogTitle, setBlogTitle] = useState("")
   const [blogs, setBlogs] = useState([])
   const { user } = useUserAuth()
+  const [comments, setComments] = useState({});
+
 
 
 const uploadImg = () => {
@@ -54,23 +56,45 @@ const uploadImg = () => {
         await updateDoc(dref, {
           uid: docRef.id,
         })
+        const userRef = doc(db, "Users", user.email)
+        await updateDoc(userRef, {
+          blogs: arrayUnion(docRef.id)
+        })
         alert('Added Post')
+
       } catch (error) {
         console.log("Error adding document:", error)
       }
     }
+
+    const handleAddComment = async (blogId, comment) => {
+      try {
+        const docRef = doc(db, "Blogs", blogId);
+        await updateDoc(docRef, {
+          comments: arrayUnion(comment),
+        });
+      } catch (error) {
+        console.log("Error adding comment:", error);
+      }
+    };
 
     useEffect(() => {
       const unsubscribe = onSnapshot(collection(db, "Blogs"), (snapshot) => {
         const blogList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }))
-        setBlogs(blogList)
-      })
+        }));
+        setBlogs(blogList);
 
-      return () => unsubscribe()
-    }, [])
+        const commentsData = {};
+        blogList.forEach((blog) => {
+          commentsData[blog.id] = blog.comments || [];
+        });
+        setComments(commentsData);
+      });
+
+      return () => unsubscribe();
+    }, []);
 
   return (
     <div>
@@ -88,7 +112,7 @@ const uploadImg = () => {
         <input
           type="file"
           onChange={(event) => {
-            setImgUpload(event.target.files[0])
+            setImgUpload(event.target.files[0]);
           }}
         />
         <input
@@ -117,10 +141,26 @@ const uploadImg = () => {
             />
           )}
           <p>{blog.msg}</p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAddComment(blog.id, e.target.comment.value);
+              e.target.comment.value = "";
+            }}
+          >
+            <input type="text" name="comment" placeholder="Add a comment" />
+            <button type="submit">Add Comment</button>
+          </form>
+          <ul>
+            {comments[blog.id] &&
+              comments[blog.id].map((comment, index) => (
+                <li key={index}>{comment}</li>
+              ))}
+          </ul>
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export default Blogs
