@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useUserAuth } from "./UserAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-const Signup = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signUp } = useUserAuth();
+  const { logIn } = useUserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signUp(email, password);
-      navigate("/login");
+      await logIn(email, password);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -21,7 +21,7 @@ const Signup = () => {
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
+        <h1>Log In</h1>
         <input
           type="email"
           placeholder="email"
@@ -34,10 +34,11 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Log In</button>
+        <button><Link to="/signup">Signup Here</Link></button>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default Login;

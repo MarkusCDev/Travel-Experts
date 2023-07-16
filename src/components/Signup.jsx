@@ -1,27 +1,44 @@
 import React, { useState } from "react";
 import { useUserAuth } from "./UserAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { db } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn } = useUserAuth();
+  const { signUp } = useUserAuth();
   const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await logIn(email, password);
-      navigate("/");
+      await signUp(email, password);
+      await addUserdata();
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }
   };
 
+  const addUserdata = async (e) => {
+    await setDoc(doc(db, "Users", email), {
+      email,
+      blogs: [],
+    })
+      .then((docRef) => {
+        console.log("Document Id:", docRef.id);
+      })
+      .catch((error) => {
+        console.log("Error adding document:", error);
+      });
+  };
+
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit}>
-        <h1>Log In</h1>
+        <h1>Sign Up</h1>
         <input
           type="email"
           placeholder="email"
@@ -34,10 +51,11 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Log In</button>
+        <button type="submit">Sign Up</button>
+        <button><Link to="/login">Login Here</Link></button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
