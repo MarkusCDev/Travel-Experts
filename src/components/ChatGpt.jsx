@@ -19,9 +19,8 @@ const ChatGpt = () => {
 
   return (
     <div>
-      <h1>ChatGpt</h1>
+      <h1>ChatGpt Destination Recommendation</h1>
       <form className="form" onSubmit={handleSubmit}>
-        <label>Destination Recommendation</label>
         <input
           type="text"
           placeholder="Enter feature"

@@ -2,6 +2,7 @@ import React from "react";
 import { useUserAuth } from "../components/UserAuth";
 import { Link } from "react-router-dom";
 import ChatGpt from "../components/ChatGpt";
+import Map from "../components/Map";
 
 const Home = () => {
   const { user, logOut } = useUserAuth();
@@ -29,6 +30,7 @@ const Home = () => {
       <button>
         <Link to="/blogs">Blogs</Link>
       </button>
+      <Map />
       <ChatGpt />
     </div>
   );
