@@ -18,24 +18,31 @@ const Map = () => {
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
-      <div>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
         <input
           ref={inputRef}
           type="text"
+          className="input"
+          style={{ marginRight: "10px" }}
           placeholder="Format: latitude, longitude"
           onChange={handleInputChange}
         />
-        <button onClick={handleButtonClick}>Show Location</button>
+        <button className="button is-primary" onClick={handleButtonClick}>
+          Show Location
+        </button>
       </div>
-      <GoogleMap
-        mapContainerStyle={{ height: "400px", width: "600px" }}
-        center={position}
-        zoom={40}
-      >
-        <Marker position={position} />
-      </GoogleMap>
+      <div style={{ height: "400px", width: "600px" }}>
+        <GoogleMap
+          mapContainerStyle={{ height: "100%", width: "100%" }}
+          center={position}
+          zoom={12}
+        >
+          <Marker position={position} />
+        </GoogleMap>
+      </div>
     </LoadScript>
   );
 };
 
 export default Map;
+

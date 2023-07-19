@@ -18,22 +18,34 @@ const ChatGpt = () => {
   };
 
   return (
-    <div>
-      <h1>ChatGpt Destination Recommendation</h1>
+    <div className="container">
+      <h1 className="title">ChatGpt Destination Recommendation</h1>
       <form className="form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter feature"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-        />
-        <button type="submit">Send</button>
+        <div className="field has-addons">
+          <div className="control is-expanded">
+            <input
+              className="input"
+              type="text"
+              placeholder="Enter feature"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+            />
+          </div>
+          <div className="control">
+            <button className="button is-primary" type="submit">
+              Send
+            </button>
+          </div>
+        </div>
       </form>
       <div>
-        <p>{response ? response : "Enter any travel desination feature..."}</p>
+        <p className="response">
+          {response ? response : "Enter any travel destination feature..."}
+        </p>
       </div>
     </div>
   );
 };
 
 export default ChatGpt;
+

@@ -106,83 +106,125 @@ const Blogs = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Blogs</h1>
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Blogs</h1>
 
-      {/* From to add a new blog */}
-      <form onSubmit={handleAddBlog}>
-        <h3>Add Blog</h3>
-        <input
-          type="text"
-          placeholder="title"
-          value={blogTitle}
-          onChange={(e) => setBlogTitle(e.target.value)}
-        />
-        <input
-          type="file"
-          onChange={(event) => {
-            setImgUpload(event.target.files[0]);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="description"
-          value={blogMsg}
-          onChange={(e) => setBlogMsg(e.target.value)}
-        />
-        <button type="submit">Upload</button>
-      </form>
+        {/* Form to add a new blog */}
+        <form onSubmit={handleAddBlog}>
+          <h3 className="subtitle">Add Blog</h3>
+          <div className="field">
+            <label className="label">Title</label>
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="Enter blog title"
+                value={blogTitle}
+                onChange={(e) => setBlogTitle(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Media</label>
+            <div className="control">
+              <input
+                className="input"
+                type="file"
+                onChange={(event) => {
+                  setImgUpload(event.target.files[0]);
+                }}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Description</label>
+            <div className="control">
+              <textarea
+                className="textarea"
+                placeholder="Enter blog description"
+                value={blogMsg}
+                onChange={(e) => setBlogMsg(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <button className="button is-primary" type="submit">
+                Upload
+              </button>
+            </div>
+          </div>
+        </form>
 
-      {/* Display the blogs */}
-      {blogs.map((blog) => (
-        <div key={blog.id}>
-          <h2>{blog.title}</h2>
-          {blog.mediaurl.includes(".mp4") ? (
-            <video controls style={{ width: "200px", height: "200px" }}>
-              <source src={blog.mediaurl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img
-              src={blog.mediaurl}
-              alt="Blog Media"
-              style={{ width: "200px", height: "200px" }}
-            />
-          )}
-          <p>{blog.msg}</p>
-          <button
-            onClick={() =>
-              setCommentVisibility((prevVisibility) => ({
-                ...prevVisibility,
-                [blog.id]: !prevVisibility[blog.id],
-              }))
-            }
-          >
-            {commentVisibility[blog.id] ? "Hide Comments" : "Show Comments"}
-          </button>
-          {commentVisibility[blog.id] && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAddComment(blog.id, e.target.comment.value);
-                e.target.comment.value = "";
-              }}
+        {/* Display the blogs */}
+        {blogs.map((blog) => (
+          <div key={blog.id} className="box">
+            <h2 className="title is-4">{blog.title}</h2>
+            {blog.mediaurl.includes(".mp4") ? (
+              <video controls style={{ width: "100%" }}>
+                <source src={blog.mediaurl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                src={blog.mediaurl}
+                alt="Blog Media"
+                style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
+              />
+            )}
+            <p>{blog.msg}</p>
+            <button
+              className="button is-link"
+              onClick={() =>
+                setCommentVisibility((prevVisibility) => ({
+                  ...prevVisibility,
+                  [blog.id]: !prevVisibility[blog.id],
+                }))
+              }
             >
-              <input type="text" name="comment" placeholder="Add a comment" />
-              <button type="submit">Add Comment</button>
-            </form>
-          )}
-          <ul>
-            {commentVisibility[blog.id] &&
-              comments[blog.id] &&
-              comments[blog.id].map((comment, index) => (
-                <li key={index}>{comment}</li>
-              ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+              {commentVisibility[blog.id] ? "Hide Comments" : "Show Comments"}
+            </button>
+            {commentVisibility[blog.id] && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddComment(blog.id, e.target.comment.value);
+                  e.target.comment.value = "";
+                }}
+              >
+                <div className="field has-addons">
+                  <div className="control is-expanded">
+                    <input
+                      className="input"
+                      type="text"
+                      name="comment"
+                      placeholder="Add a comment"
+                    />
+                  </div>
+                  <div className="control">
+                    <button className="button is-primary" type="submit">
+                      Add Comment
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+            {commentVisibility[blog.id] && (
+              <ul>
+                {comments[blog.id] &&
+                  comments[blog.id].map((comment, index) => (
+                    <li key={index}>{comment}</li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 
 export default Blogs;
+
+
