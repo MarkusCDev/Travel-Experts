@@ -1,19 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
-const Map = () => {
-  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
-  const [position, setPosition] = useState({ lat: 40.820150578444924, lng: -73.949533933551});
+const Map = ({ position }) => {
   const inputRef = useRef(null);
 
   const handleInputChange = () => {
     const value = inputRef.current.value;
     const [lat, lng] = value.split(",");
-    setCoordinates({ lat: parseFloat(lat), lng: parseFloat(lng) });
-  };
-
-  const handleButtonClick = () => {
-    setPosition(coordinates);
+    //  directly updating the position based on the input.
+    // Using a separate local state for this and set the position using the handleButtonClick method.
+    position = { lat: parseFloat(lat), lng: parseFloat(lng) };
   };
 
   return (
@@ -27,9 +23,6 @@ const Map = () => {
           placeholder="Format: latitude, longitude"
           onChange={handleInputChange}
         />
-        <button className="button is-primary" onClick={handleButtonClick}>
-          Show Location
-        </button>
       </div>
       <div style={{ height: "400px", width: "600px" }}>
         <GoogleMap
@@ -45,4 +38,5 @@ const Map = () => {
 };
 
 export default Map;
+
 

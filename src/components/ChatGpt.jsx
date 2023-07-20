@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const ChatGpt = () => {
+const ChatGpt = ({ onLocationReceived }) => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const HTTP = "http://localhost:8020/chat";
@@ -10,8 +10,18 @@ const ChatGpt = () => {
     e.preventDefault();
     axios
       .post(`${HTTP}`, { prompt })
-      // .get(`${HTTP}`, console.log('Get Worked'))
-      .then((res) => setResponse(res.data))
+      .then((res) => {
+        const responseText = res.data.trim();
+        setResponse(responseText);
+
+        // Extract latitude and longitude from the response
+        const match = responseText.match(/(-?\d+\.\d+) (-?\d+\.\d+)/);
+        if (match) {
+          const lat = parseFloat(match[1]);
+          const lng = parseFloat(match[2]);
+          onLocationReceived({ lat, lng });
+        }
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -48,4 +58,5 @@ const ChatGpt = () => {
 };
 
 export default ChatGpt;
+
 
