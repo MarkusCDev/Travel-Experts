@@ -39,9 +39,25 @@ const Navbar = () => {
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand">
-        <Link className="navbar-item" to="/home">
+            <div className="navbar-brand">
+       <Link className="navbar-item" to="/">
           Home
+        </Link>
+      </div>
+      <div className="navbar-brand">
+       <Link className="navbar-item" to="/travel">
+          Travel
+        </Link>
+      </div>
+
+       <div className="navbar-brand">
+       <Link className="navbar-item" to="/travel">
+          Home
+        </Link>
+      </div>
+      <div className="navbar-brand">
+       <Link className="navbar-item" to="/travel">
+          Travel
         </Link>
       </div>
 
