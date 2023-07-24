@@ -4,6 +4,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, getDocs,  query, where, limit, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import GeoPoint from 'geopoint';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const Reviews = () => {
   const auth = getAuth();
@@ -206,12 +208,13 @@ const Reviews = () => {
               {
                 Array.apply(null, Array(5))
                 .map((ele, i) => (
-                  <span key={i + 1}
+                  <FontAwesomeIcon key={i + 1}
+                    icon={faStar}
                     className={starClass(i + 1)}
                     onMouseOver={() => onStarHover(i + 1)}
                     onMouseOut={() => onStarHover(0)}
                     onClick={() => onStarClick(i + 1)}
-                  ></span>
+                  />
                 ))
               }
               </div>
@@ -235,9 +238,10 @@ const Reviews = () => {
               <h2 className='title is-4'>{data.location.name}<span style={{float: 'right'}}>{
                 Array.apply(null, Array(5))
                 .map((ele, i) => (
-                  <span key={i + 1}
+                  <FontAwesomeIcon key={i + 1}
+                    icon={faStar}
                     className={i + 1 <= data.rating ? 'fa fa-star checked': 'fa fa-star'}
-                  ></span>
+                  />
                 ))
               }</span></h2>
               <div>User: {data.userId}</div>
