@@ -13,7 +13,9 @@ const Reviews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const reviewsRef = collection(db, 'Reviews');
   const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({
+  const [starHover, setStarHover] = useState(0);
+
+  const blankNewReview = () => ({
     location: {
       latitude: searchParams.get("latitude") || 0,
       longitude: searchParams.get("longitude") || 0,
@@ -22,7 +24,15 @@ const Reviews = () => {
     rating: 0,
     content: ''
   });
-  const [starHover, setStarHover] = useState(0);
+
+  const [newReview, setNewReview] = useState(blankNewReview());
+
+  const validateReviewIsComplete = () => !(
+    newReview.content !== '' &&
+    newReview.location.latitude !== 0 &&
+    newReview.location.longitude !== 0 &&
+    newReview.location.name !== ''
+  );
 
   const getReviews = async () => {
     const querySnapshot = await getDocs(reviewsRef);
@@ -104,15 +114,7 @@ const Reviews = () => {
         setReviews(reviews.docs);
       });
 
-      setNewReview({
-        location: {
-          latitude: 0,
-          longitude: 0,
-          name: ''
-        },
-        rating: 0,
-        content: ''
-      });
+      setNewReview(blankNewReview());
 
       setSearchParams();
     });
@@ -221,7 +223,7 @@ const Reviews = () => {
           </div>
           <div className="field">
             <div className="control">
-              <button className="button is-primary" type="submit">
+              <button className="button is-primary" type="submit" disabled={validateReviewIsComplete()}>
                 Submit
               </button>
             </div>
