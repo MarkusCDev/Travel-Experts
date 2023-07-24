@@ -14,12 +14,19 @@ const ChatGpt = ({ onLocationReceived }) => {
         const responseText = res.data.trim();
         setResponse(responseText);
 
-        // Extract latitude and longitude from the response
-        const match = responseText.match(/(-?\d+\.\d+) (-?\d+\.\d+)/);
-        if (match) {
+        // Extract multiple latitudes and longitudes from the response
+        const regex = /(-?\d+\.\d+) (-?\d+\.\d+)/g;
+        let match;
+        const locations = [];
+
+        while ((match = regex.exec(responseText)) !== null) {
           const lat = parseFloat(match[1]);
           const lng = parseFloat(match[2]);
-          onLocationReceived({ lat, lng });
+          locations.push({ lat, lng });
+        }
+
+        if (locations.length) {
+          onLocationReceived(locations);
         }
       })
       .catch((error) => {
