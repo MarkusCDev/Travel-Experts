@@ -3,16 +3,20 @@ import ChatGpt from "../components/ChatGpt";
 import Map from "../components/Map";
 
 const Home = () => {
-  const [position, setPosition] = useState({ lat: 40.820150578444924, lng: -73.949533933551});
+  const [position, setPosition] = useState({ lat: 40.820150578444924, lng: -73.949533933551 });
+  const [showMap, setShowMap] = useState(false);
 
   return (
     <div className="container">
       <div className="columns is-centered">
         <div className="column is-half">
-          <Map position={position} />
+          {showMap && <Map position={position} />}
         </div>
         <div className="column is-half">
-          <ChatGpt onLocationReceived={(loc) => setPosition(loc)} />
+          <ChatGpt onLocationReceived={(loc) => {
+            setPosition(loc);
+            setShowMap(true);
+          }} />
         </div>
       </div>
     </div>
@@ -20,6 +24,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
