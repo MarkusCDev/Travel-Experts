@@ -22,4 +22,9 @@ code {
 .app-content {
   flex-grow: 1;
 }
+.has-border-cyan {
+  border: 1px solid #6c9baa; /* Cyan blue color */
+  border-radius: 8px; /* Optional: Adds rounded corners to the border */
+  box-shadow: 0 10px 4px rgba(103, 151, 160, 0.1); /* Optional: Adds a shadow */
+}
 
