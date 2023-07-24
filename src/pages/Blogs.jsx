@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { storage, db } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
@@ -106,11 +108,10 @@ const Blogs = () => {
   }, []);
 
   return (
-    <section className="section">
+<section className="section">
       <div className="container">
-        <h1 className="title">Blogs</h1>
+        <h1 className="title has-text-centered">BLOGS</h1>
 
-        {/* Form to add a new blog */}
         <form onSubmit={handleAddBlog}>
           <h3 className="subtitle">Add Blog</h3>
           <div className="field">
@@ -157,69 +158,81 @@ const Blogs = () => {
           </div>
         </form>
 
-        {/* Display the blogs */}
-        {blogs.map((blog) => (
-          <div key={blog.id} className="box">
-            <h2 className="title is-4">{blog.title}</h2>
-            {blog.mediaurl.includes(".mp4") ? (
-              <video controls style={{ width: "100%" }}>
-                <source src={blog.mediaurl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            ) : (
-              <img
-                src={blog.mediaurl}
-                alt="Blog Media"
-                style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
-              />
-            )}
-            <p>{blog.msg}</p>
-            <button
-              className="button is-link"
-              onClick={() =>
-                setCommentVisibility((prevVisibility) => ({
-                  ...prevVisibility,
-                  [blog.id]: !prevVisibility[blog.id],
-                }))
-              }
-            >
-              {commentVisibility[blog.id] ? "Hide Comments" : "Show Comments"}
-            </button>
-            {commentVisibility[blog.id] && (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleAddComment(blog.id, e.target.comment.value);
-                  e.target.comment.value = "";
-                }}
-              >
-                <div className="field has-addons">
-                  <div className="control is-expanded">
-                    <input
-                      className="input"
-                      type="text"
-                      name="comment"
-                      placeholder="Add a comment"
+        <div className="columns is-centered is-multiline has-shadow has-border">
+          {blogs.map((blog) => (
+            <div key={blog.id} className="column is-8">
+              <div className="box has-shadow has-border-cyan">
+                <h2 className="title is-4 has-text-centered">{blog.title}</h2>
+                <div className="image-container">
+                  {blog.mediaurl.includes(".mp4") ? (
+                    <video controls style={{ width: "100%", height: "auto" }}>
+                      <source src={blog.mediaurl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img
+                      src={blog.mediaurl}
+                      alt="Blog Media"
+                      style={{ width: "100%", height: "auto", objectFit: "cover" }}
                     />
-                  </div>
+                  )}
+                </div>
+                <p>{blog.msg}</p>
+                <div>
                   <div className="control">
-                    <button className="button is-primary" type="submit">
-                      Add Comment
+                    <button
+                      className="button is-link"
+                      onClick={() =>
+                        setCommentVisibility((prevVisibility) => ({
+                          ...prevVisibility,
+                          [blog.id]: !prevVisibility[blog.id],
+                        }))
+                      }
+                    >
+                      {commentVisibility[blog.id] ? "Hide Comments" : "Show Comments"}
                     </button>
                   </div>
                 </div>
-              </form>
-            )}
-            {commentVisibility[blog.id] && (
-              <ul>
-                {comments[blog.id] &&
-                  comments[blog.id].map((comment, index) => (
-                    <li key={index}>{comment}</li>
-                  ))}
-              </ul>
-            )}
-          </div>
-        ))}
+
+                {commentVisibility[blog.id] && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleAddComment(blog.id, e.target.comment.value);
+                      e.target.comment.value = "";
+                    }}
+                  >
+                    <div className="field has-addons">
+                      <div className="control is-expanded">
+                       
+                        <input
+                          className="input"
+                          type="text"
+                          name="comment"
+                          placeholder="Add a comment"
+                        />
+                      </div>
+                      <div className="control">
+                        <button className="button is-primary" type="submit">
+                          Add Comment
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                )}
+
+                {commentVisibility[blog.id] && (
+                  <ul>
+                    {comments[blog.id] &&
+                      comments[blog.id].map((comment, index) => (
+                        <li key={index}>{comment}</li>
+                      ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
