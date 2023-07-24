@@ -29,7 +29,7 @@ const ChatGpt = ({ onLocationReceived }) => {
 
   return (
     <div className="container">
-      <h1 className="title">ChatGpt Destination Recommendation</h1>
+      <h1 className="title">AI Destination Recommendation</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="field has-addons">
           <div className="control is-expanded">

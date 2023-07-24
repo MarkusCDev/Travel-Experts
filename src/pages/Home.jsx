@@ -8,15 +8,13 @@ const Home = () => {
 
   return (
     <div className="container">
-      <div className="columns is-centered">
-        <div className="column is-half">
-          {showMap && <Map position={position} />}
-        </div>
+      <div className="columns is-centered" style={{ minHeight: '100vh' }}> {/* Ensure it's centered and takes full viewport height */}
         <div className="column is-half">
           <ChatGpt onLocationReceived={(loc) => {
             setPosition(loc);
             setShowMap(true);
           }} />
+          {showMap && <Map position={position} />}
         </div>
       </div>
     </div>
@@ -24,6 +22,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
