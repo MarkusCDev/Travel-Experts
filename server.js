@@ -22,7 +22,7 @@ app.post("/chat", async (req, res) => {
 
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    max_tokens: 120,
+    max_tokens: 200,
     temperature: 0,
     prompt: `Recommend me 3 '${prompt}', return an array in JSON where each element of the array is a recommendation that only includes the name, latitude as lat and longitude as lng`,
   });
