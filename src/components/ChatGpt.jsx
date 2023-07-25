@@ -11,23 +11,7 @@ const ChatGpt = ({ onLocationReceived }) => {
     axios
       .post(`${HTTP}`, { prompt })
       .then((res) => {
-        const responseText = res.data.trim();
-
-        // Adjusted regular expression to match multi-word location names
-        const locationMatches = responseText.match(
-          /([A-Za-z\s]+) (-?\d+\.\d+) (-?\d+\.\d+)/g
-        );
-
-        const parsedLocations = locationMatches.map((match) => {
-          const parts = match.split(" ").filter((part) => part); // Filter to remove any extra spaces
-          const lng = parseFloat(parts.pop()); // last element
-          const lat = parseFloat(parts.pop()); // second last element
-          const name = parts.join(" "); // remaining elements make up the name
-
-          return { name, lat, lng };
-        });
-
-        setLocations(parsedLocations);
+        setLocations(res.data);
       })
       .catch((error) => {
         console.log(error);
