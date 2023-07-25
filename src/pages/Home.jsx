@@ -4,23 +4,21 @@ import Map from "../components/Map";
 
 const Home = () => {
   const [position, setPosition] = useState(null);
-  const [showMap, setShowMap] = useState(false);  // New state variable to control map visibility
+  const [showMap, setShowMap] = useState(false);
 
-  // Modify this handler to also change the showMap state
   const handleLocationReceived = (loc) => {
     setPosition(loc);
-    setShowMap(true);  // Show the map when a location is received
+    setShowMap(true);
   };
 
-  
   return (
     <div className="container">
-      <div className="columns is-centered">
-        <div className="column is-half">
-          {showMap && position && <Map position={position} />}
-        </div>
-        <div className="column is-half">
+      <div className="columns is-centered is-multiline">
+        <div className="column is-three-quarters">
           <ChatGpt onLocationReceived={handleLocationReceived} />
+        </div>
+        <div className="column is-three-quarters">
+          {showMap && position && <Map position={position} />}
         </div>
       </div>
     </div>
@@ -28,6 +26,10 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
 
 
 
