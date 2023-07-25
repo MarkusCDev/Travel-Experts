@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { storage, db } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
@@ -12,6 +12,9 @@ import {
   doc,
   onSnapshot,
   arrayUnion,
+  serverTimestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 
 const Blogs = () => {
@@ -23,6 +26,11 @@ const Blogs = () => {
   const { user } = useUserAuth();
   const [comments, setComments] = useState({});
   const [commentVisibility, setCommentVisibility] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible((prev) => !prev);
+  };
 
   const uploadImg = () => {
     return new Promise((resolve, reject) => {
@@ -48,9 +56,6 @@ const Blogs = () => {
     });
   };
 
-
-
-
   const handleAddBlog = async (e) => {
     e.preventDefault();
     try {
@@ -66,6 +71,7 @@ const Blogs = () => {
       const dref = doc(db, "Blogs", docRef.id);
       await updateDoc(dref, {
         uid: docRef.id,
+        timestamp: serverTimestamp(),
       });
 
         const prodata = {
@@ -80,7 +86,8 @@ const Blogs = () => {
       await updateDoc(userRef, {
         blogs: arrayUnion(prodata),
       });
-      alert("Added Post");
+      toggleModal();
+      // alert("Added Post");
     } catch (error) {
       console.log("Error adding document:", error);
     }
@@ -102,73 +109,100 @@ const Blogs = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "Blogs"), (snapshot) => {
-      const blogList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setBlogs(blogList);
+    const unsubscribe = onSnapshot(
+      query(collection(db, "Blogs"), orderBy("timestamp", "desc")), // Order by createdAt in descending order
+      (snapshot) => {
+        const blogList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setBlogs(blogList);
 
-      const commentsData = {};
-      blogList.forEach((blog) => {
-        commentsData[blog.id] = blog.comments || [];
-      });
-      setComments(commentsData);
-    });
+        const commentsData = {};
+        blogList.forEach((blog) => {
+          commentsData[blog.id] = blog.comments || [];
+        });
+        setComments(commentsData);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
 
   return (
-<section className="section">
+    <section className="section">
       <div className="container">
-        <h1 className="title has-text-centered">BLOGS</h1>
+        <h1 className="title has-text-centered">Check Out the Newest Blogs!</h1>
+        <div className="has-text-centered">
+          <button className="button is-primary mb-4" onClick={toggleModal}>
+            Add Blog
+          </button>
+        </div>
 
-        <form onSubmit={handleAddBlog}>
-          <h3 className="subtitle">Add Blog</h3>
-          <div className="field">
-            <label className="label">Title</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="Enter blog title"
-                value={blogTitle}
-                onChange={(e) => setBlogTitle(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Media</label>
-            <div className="control">
-              <input
-                className="input"
-                type="file"
-                onChange={(event) => {
-                  setImgUpload(event.target.files[0]);
-                }}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Description</label>
-            <div className="control">
-              <textarea
-                className="textarea"
-                placeholder="Enter blog description"
-                value={blogMsg}
-                onChange={(e) => setBlogMsg(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button className="button is-primary" type="submit">
+        <div className={`modal ${modalVisible ? "is-active" : ""}`}>
+          <div className="modal-background" onClick={toggleModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered">Add Blog</p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={toggleModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <form onSubmit={handleAddBlog} id="add-blog-form">
+                <div className="field">
+                  <label className="label">Title</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="Enter blog title"
+                      value={blogTitle}
+                      onChange={(e) => setBlogTitle(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Media</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="file"
+                      onChange={(event) => {
+                        setImgUpload(event.target.files[0]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Description</label>
+                  <div className="control">
+                    <textarea
+                      className="textarea"
+                      placeholder="Enter blog description"
+                      value={blogMsg}
+                      onChange={(e) => setBlogMsg(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </form>
+            </section>
+            <footer className="modal-card-foot">
+              <button
+                className="button is-primary"
+                type="submit"
+                form="add-blog-form"
+              >
                 Upload
               </button>
-            </div>
+              <button className="button" onClick={toggleModal}>
+                Cancel
+              </button>
+            </footer>
           </div>
-        </form>
+        </div>
 
         <div className="columns is-centered is-multiline has-shadow has-border">
           {blogs.map((blog) => (
@@ -185,27 +219,30 @@ const Blogs = () => {
                     <img
                       src={blog.mediaurl}
                       alt="Blog Media"
-                      style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "cover",
+                      }}
                     />
                   )}
                 </div>
                 <div className="centered-text">
-                <p className="centered">{blog.msg}</p>
+                  <p className="centered">{blog.msg}</p>
                 </div>
                 <div>
                   <div className="control">
-                  <button
-  className="is-link no-background underline-on-hover is-primary"
-  onClick={() =>
-    setCommentVisibility((prevVisibility) => ({
-      ...prevVisibility,
-      [blog.id]: !prevVisibility[blog.id],
-    }))
-  }
->
-  {commentVisibility[blog.id] ? "Hide" : "Comment"}
-</button>
-
+                    <button
+                      className="is-link no-background underline-on-hover is-primary"
+                      onClick={() =>
+                        setCommentVisibility((prevVisibility) => ({
+                          ...prevVisibility,
+                          [blog.id]: !prevVisibility[blog.id],
+                        }))
+                      }
+                    >
+                      {commentVisibility[blog.id] ? "Hide" : "Comment"}
+                    </button>
                   </div>
                 </div>
 
@@ -219,7 +256,6 @@ const Blogs = () => {
                   >
                     <div className="field has-addons">
                       <div className="control is-expanded">
-
                         <input
                           className="input"
                           type="text"
@@ -251,8 +287,7 @@ const Blogs = () => {
       </div>
     </section>
   );
+
 };
 
 export default Blogs;
-
-

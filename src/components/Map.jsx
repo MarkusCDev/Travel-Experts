@@ -13,27 +13,28 @@ const Map = ({ position }) => {
   };
 
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
-      {/* <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
-        <input
-          ref={inputRef}
-          type="text"
-          className="input"
-          style={{ marginRight: "10px" }}
-          placeholder="Format: latitude, longitude"
-          onChange={handleInputChange}
-        />
-      </div> */}
-      <div style={{ height: "400px", width: "600px" }}>
-        <GoogleMap
-          mapContainerStyle={{ height: "100%", width: "100%" }}
-          center={position}
-          zoom={12}
-        >
-          <Marker position={position} />
-        </GoogleMap>
+    <div className="columns is-centered">
+      <div className="column is-narrow"></div>
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+          {/* <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+            <input
+              ref={inputRef}
+              type="text"
+              className="input"
+              style={{ marginRight: "10px" }}
+              placeholder="Format: latitude, longitude"
+              onChange={handleInputChange}
+            />
+          </div> */}
+          <div style={{ height: "600px", width: "800px" }}>
+            <GoogleMap
+              mapContainerStyle={{ height: "100%", width: "100%" }}
+              center={position}
+              zoom={12}
+            ><Marker position={position} /></GoogleMap>
+          </div>
+        </LoadScript>
       </div>
-    </LoadScript>
   );
 };
 

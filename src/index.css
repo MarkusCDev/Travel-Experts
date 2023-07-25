@@ -21,6 +21,7 @@ code {
 
 .app-content {
   flex-grow: 1;
+  background-color: rgb(220, 241, 220);
 }
 .has-border-cyan {
   border: 1px solid #6c9baa; /* Cyan blue color */

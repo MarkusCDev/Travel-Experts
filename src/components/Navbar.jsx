@@ -39,13 +39,13 @@ const Navbar = () => {
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
-            <div className="navbar-brand">
-       <Link className="navbar-item" to="/">
-          Home
+      <div className="navbar-brand">
+        <Link className="navbar-item" to="/">
+          <img src="/globelogo.png" alt="Travel Experts" />
         </Link>
       </div>
       <div className="navbar-brand">
-       <Link className="navbar-item" to="/travel">
+        <Link className="navbar-item" to="/travel">
           Travel
         </Link>
       </div>
@@ -64,9 +64,11 @@ const Navbar = () => {
           <Link className="navbar-item" to="/account">
             Account
           </Link>
-          <button className="button is-danger" onClick={handleLogOut}>
-            Logout
-          </button>
+          <div className="navbar-item has-text-centered">
+            <button className="button is-danger" onClick={handleLogOut}>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </nav>
