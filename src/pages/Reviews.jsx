@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, getDocs,  query, where, limit, orderBy } from "firebase/firestore";
+import { addDoc, collection, getDocs,  query, where, limit, orderBy, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase";
 import GeoPoint from 'geopoint';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,6 +78,15 @@ const Reviews = () => {
         rating: data.rating,
         content: data.content,
         createdAt: Date.now()
+      });
+      console.log("Document Id:", docRef.id);
+      const dref = doc(db, "Reviews", docRef.id);
+      await updateDoc(dref, {
+        uid: docRef.id,
+      });
+      const userRef = doc(db, "Users", user.email);
+      await updateDoc(userRef, {
+        reviews: arrayUnion(docRef.id),
       });
     } catch (error) {
       console.log("An error occured when creating a new review:", error);

@@ -26,6 +26,7 @@ const Signup = () => {
       await setDoc(doc(db, "Users", email), {
         email,
         blogs: [],
+        reviews: [],
       });
       console.log("Document added successfully");
     } catch (error) {
