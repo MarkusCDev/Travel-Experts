@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require('path');
 require("dotenv").config();
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -30,11 +31,20 @@ app.post("/chat", async (req, res) => {
 
 const PORT = 8020;
 
-// app.get("/x", (req, res) => {
-//   res.send("GET Request Called");
-//   console.log("Get Request Called")
-// });
-
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
+});
+
+const staticPort = 80;
+const staticApp = express();
+
+staticApp.use(cors());
+staticApp.use(express.static(path.join(__dirname, './build')));
+staticApp.get('*', (req, res) => {
+  res.sendFile('index.html', {
+    root: path.join(__dirname, './build')
+  })
+});
+staticApp.listen(staticPort, () => {
+  console.log(`Static server running on port: ${staticPort}`);
 });
