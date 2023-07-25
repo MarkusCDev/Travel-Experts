@@ -23,7 +23,7 @@ app.post("/chat", async (req, res) => {
     model: "text-davinci-003",
     max_tokens: 70,
     temperature: 0,
-    prompt: `Recommend me 3 '${prompt}' and only provide the longitude and latitude in the format: 'Location_name latitude_number longitude_number.' Also, do not provide anything else.`,
+    prompt: `Recommend me 3 '${prompt}' and only provide the longitude and latitude in the format: 'Location_name latitude_number longitude_number Location_name latitude_number longitude_number Location_name latitude_number longitude_number'`,
   });
   res.send(completion.data.choices[0].text);
 });

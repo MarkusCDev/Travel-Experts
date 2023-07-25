@@ -3,7 +3,7 @@ import axios from "axios";
 
 const ChatGpt = ({ onLocationReceived }) => {
   const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState("");
+  const [locations, setLocations] = useState([]);
   const HTTP = "http://localhost:8020/chat";
 
   const handleSubmit = (e) => {
@@ -12,15 +12,22 @@ const ChatGpt = ({ onLocationReceived }) => {
       .post(`${HTTP}`, { prompt })
       .then((res) => {
         const responseText = res.data.trim();
-        setResponse(responseText);
 
-        // Extract latitude and longitude from the response
-        const match = responseText.match(/(-?\d+\.\d+) (-?\d+\.\d+)/);
-        if (match) {
-          const lat = parseFloat(match[1]);
-          const lng = parseFloat(match[2]);
-          onLocationReceived({ lat, lng });
-        }
+        // Adjusted regular expression to match multi-word location names
+        const locationMatches = responseText.match(
+          /([A-Za-z\s]+) (-?\d+\.\d+) (-?\d+\.\d+)/g
+        );
+
+        const parsedLocations = locationMatches.map((match) => {
+          const parts = match.split(" ").filter((part) => part); // Filter to remove any extra spaces
+          const lng = parseFloat(parts.pop()); // last element
+          const lat = parseFloat(parts.pop()); // second last element
+          const name = parts.join(" "); // remaining elements make up the name
+
+          return { name, lat, lng };
+        });
+
+        setLocations(parsedLocations);
       })
       .catch((error) => {
         console.log(error);
@@ -48,15 +55,21 @@ const ChatGpt = ({ onLocationReceived }) => {
           </div>
         </div>
       </form>
-      <div>
-        <p className="response">
-          {response ? response : "Enter any travel destination feature..."}
-        </p>
+      <div className="location-buttons">
+        {locations.map((location) => (
+          <button
+            key={location.name}
+            onClick={() =>
+              onLocationReceived({ lat: location.lat, lng: location.lng })
+            }
+            className="button is-link is-light"
+          >
+            {location.name}
+          </button>
+        ))}
       </div>
     </div>
   );
 };
 
 export default ChatGpt;
-
-
