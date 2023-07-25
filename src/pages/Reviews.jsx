@@ -14,6 +14,11 @@ const Reviews = () => {
   const reviewsRef = collection(db, 'Reviews');
   const [reviews, setReviews] = useState([]);
   const [starHover, setStarHover] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible((prev) => !prev);
+  };
 
   const blankNewReview = () => ({
     location: {
@@ -135,6 +140,7 @@ const Reviews = () => {
 
       setSearchParams();
     });
+    toggleModal();
   };
 
   useEffect(() => {
@@ -167,102 +173,161 @@ const Reviews = () => {
   }, [user]);
 
   return (
-    <section className='section'>
-      <form onSubmit={handleSubmit}>
-        <div className='container'>
-        <h1 className='title'>New Review</h1>
-          <div className="field">
-            <label className="label">Location name</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="Enter location name"
-                value={newReview.location.name}
-                onChange={(e) => setNewReview({...newReview, location: {...newReview.location, name: e.target.value}})}
-                disabled={searchParams.get("name")}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Latitude</label>
-            <div className="control">
-              <input
-                className="input"
-                type="number"
-                placeholder="Enter Latitude"
-                value={newReview.location.latitude || ''}
-                onChange={(e) => setNewReview({...newReview, location: {...newReview.location, latitude: e.target.value}})}
-                disabled={searchParams.get("latitude")}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Longitude</label>
-            <div className="control">
-              <input
-                className="input"
-                type="number"
-                placeholder="Enter Longitude"
-                value={newReview.location.longitude || ''}
-                onChange={(e) => setNewReview({...newReview, location: {...newReview.location, longitude: e.target.value}})}
-                disabled={searchParams.get("longitude")}
-              />
-            </div>
-          </div>
-          <div className='field'>
-            <label className="label">Content</label>
-            <div className="control">
-            <textarea
-                  className="textarea"
-                  placeholder="Enter review"
-                  value={newReview.content}
-                  onChange={(e) => setNewReview({...newReview, content: e.target.value})}
-                />
-            </div>
-          </div>
-          <div className='field'>
-            <label className="label">Score</label>
-            <div className="control">
-              {
-                Array.apply(null, Array(5))
-                .map((ele, i) => (
-                  <FontAwesomeIcon key={i + 1}
-                    icon={faStar}
-                    className={starClass(i + 1)}
-                    onMouseOver={() => onStarHover(i + 1)}
-                    onMouseOut={() => onStarHover(0)}
-                    onClick={() => onStarClick(i + 1)}
-                  />
-                ))
-              }
+    <section className="section">
+      <h1 className="title has-text-centered">Destination Reviews</h1>
+      <div className="has-text-centered">
+        <button className="button is-primary mb-4" onClick={toggleModal}>
+          Add Review
+        </button>
+      </div>
+
+      <div className={`modal ${modalVisible ? "is-active" : ""}`}>
+        <div className="modal-background" onClick={toggleModal}></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title has-text-centered">Add Review</p>
+            <button
+              className="delete"
+              aria-label="close"
+              onClick={toggleModal}
+            ></button>
+          </header>
+          <section className="modal-card-body">
+            <form id="add-review-form" onSubmit={handleSubmit}>
+              <div className="container">
+                <h1 className="title">New Review</h1>
+                <div className="field">
+                  <label className="label">Location name</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="Enter location name"
+                      value={newReview.location.name}
+                      onChange={(e) =>
+                        setNewReview({
+                          ...newReview,
+                          location: {
+                            ...newReview.location,
+                            name: e.target.value,
+                          },
+                        })
+                      }
+                      disabled={searchParams.get("name")}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Latitude</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="number"
+                      placeholder="Enter Latitude"
+                      value={newReview.location.latitude || ""}
+                      onChange={(e) =>
+                        setNewReview({
+                          ...newReview,
+                          location: {
+                            ...newReview.location,
+                            latitude: e.target.value,
+                          },
+                        })
+                      }
+                      disabled={searchParams.get("latitude")}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Longitude</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="number"
+                      placeholder="Enter Longitude"
+                      value={newReview.location.longitude || ""}
+                      onChange={(e) =>
+                        setNewReview({
+                          ...newReview,
+                          location: {
+                            ...newReview.location,
+                            longitude: e.target.value,
+                          },
+                        })
+                      }
+                      disabled={searchParams.get("longitude")}
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Content</label>
+                  <div className="control">
+                    <textarea
+                      className="textarea"
+                      placeholder="Enter review"
+                      value={newReview.content}
+                      onChange={(e) =>
+                        setNewReview({ ...newReview, content: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Score</label>
+                  <div className="control">
+                    {Array.apply(null, Array(5)).map((ele, i) => (
+                      <FontAwesomeIcon
+                        key={i + 1}
+                        icon={faStar}
+                        className={starClass(i + 1)}
+                        onMouseOver={() => onStarHover(i + 1)}
+                        onMouseOut={() => onStarHover(0)}
+                        onClick={() => onStarClick(i + 1)}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button className="button is-primary" type="submit" disabled={validateReviewIsComplete()}>
-                Submit
-              </button>
-            </div>
-          </div>
+            </form>
+          </section>
+          <footer className="modal-card-foot">
+            <button
+              className="button is-primary"
+              type="submit"
+              form="add-review-form"
+            >
+              Upload
+            </button>
+            <button className="button" onClick={toggleModal}>
+              Cancel
+            </button>
+          </footer>
         </div>
-      </form>
-      <div className='container'>
-        <h1 className='title'>Reviews</h1>
-        {reviews.map(review => {
+      </div>
+
+      <div className="container">
+        <h1 className="title">Reviews</h1>
+        {reviews.map((review) => {
           const data = review.data();
 
           return (
-            <div key={review.id} className='box'>
-              <h2 className='title is-4'>{data.location.name}<span style={{float: 'right'}}>{
-                Array.apply(null, Array(5))
-                .map((ele, i) => (
-                  <FontAwesomeIcon key={i + 1}
-                    icon={faStar}
-                    className={i + 1 <= data.rating ? 'fa fa-star checked': 'fa fa-star'}
-                  />
-                ))
-              }</span></h2>
+            <div key={review.id} className="box">
+              <h2 className="title is-4">
+                {data.location.name}
+                <span style={{ float: "right" }}>
+                  {Array.apply(null, Array(5)).map((ele, i) => (
+                    <FontAwesomeIcon
+                      key={i + 1}
+                      icon={faStar}
+                      className={
+                        i + 1 <= data.rating
+                          ? "fa fa-star checked"
+                          : "fa fa-star"
+                      }
+                    />
+                  ))}
+                </span>
+              </h2>
               <div>User: {data.userId}</div>
               <div>Created: {data.createdAt}</div>
               <div>{data.content}</div>
