@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require('path');
 require("dotenv").config();
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -21,20 +22,30 @@ app.post("/chat", async (req, res) => {
 
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    max_tokens: 70,
+    max_tokens: 200,
     temperature: 0,
-    prompt: `Recommend me 3 '${prompt}' and only provide the longitude and latitude in the format: 'Location_name latitude_number longitude_number Location_name latitude_number longitude_number Location_name latitude_number longitude_number'`,
+    prompt: `Recommend me 3 '${prompt}', return an array in JSON where each element of the array is a recommendation that only includes the name, latitude as lat and longitude as lng`,
   });
-  res.send(completion.data.choices[0].text);
+
+  res.send(JSON.parse(completion.data.choices[0].text));
 });
 
 const PORT = 8020;
 
-// app.get("/x", (req, res) => {
-//   res.send("GET Request Called");
-//   console.log("Get Request Called")
-// });
-
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
+});
+
+const staticPort = 80;
+const staticApp = express();
+
+staticApp.use(cors());
+staticApp.use(express.static(path.join(__dirname, './build')));
+staticApp.get('*', (req, res) => {
+  res.sendFile('index.html', {
+    root: path.join(__dirname, './build')
+  })
+});
+staticApp.listen(staticPort, () => {
+  console.log(`Static server running on port: ${staticPort}`);
 });

@@ -50,17 +50,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-       <div className="navbar-brand">
-       <Link className="navbar-item" to="/travel">
-          Home
-        </Link>
-      </div>
-      <div className="navbar-brand">
-       <Link className="navbar-item" to="/travel">
-          Travel
-        </Link>
-      </div>
-
       <div className="navbar-menu">
         <div className="navbar-start">
           <Link className="navbar-item" to="/blogs">

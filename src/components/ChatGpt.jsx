@@ -4,30 +4,14 @@ import axios from "axios";
 const ChatGpt = ({ onLocationReceived }) => {
   const [prompt, setPrompt] = useState("");
   const [locations, setLocations] = useState([]);
-  const HTTP = "http://localhost:8020/chat";
+  const HTTP = `${window.location.protocol}//${window.location.hostname}:8020/chat`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post(`${HTTP}`, { prompt })
       .then((res) => {
-        const responseText = res.data.trim();
-
-        // Adjusted regular expression to match multi-word location names
-        const locationMatches = responseText.match(
-          /([A-Za-z\s]+) (-?\d+\.\d+) (-?\d+\.\d+)/g
-        );
-
-        const parsedLocations = locationMatches.map((match) => {
-          const parts = match.split(" ").filter((part) => part); // Filter to remove any extra spaces
-          const lng = parseFloat(parts.pop()); // last element
-          const lat = parseFloat(parts.pop()); // second last element
-          const name = parts.join(" "); // remaining elements make up the name
-
-          return { name, lat, lng };
-        });
-
-        setLocations(parsedLocations);
+        setLocations(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -36,7 +20,7 @@ const ChatGpt = ({ onLocationReceived }) => {
 
   return (
     <div className="container">
-      <h1 className="title">ChatGpt Destination Recommendation</h1>
+      <h1 className="title">AI Destination Recommendation</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="field has-addons">
           <div className="control is-expanded">
