@@ -189,20 +189,23 @@ const Blogs = () => {
                     />
                   )}
                 </div>
-                <p>{blog.msg}</p>
+                <div className="centered-text">
+                <p className="centered">{blog.msg}</p>
+                </div>
                 <div>
                   <div className="control">
-                    <button
-                      className="button is-link"
-                      onClick={() =>
-                        setCommentVisibility((prevVisibility) => ({
-                          ...prevVisibility,
-                          [blog.id]: !prevVisibility[blog.id],
-                        }))
-                      }
-                    >
-                      {commentVisibility[blog.id] ? "Hide Comments" : "Show Comments"}
-                    </button>
+                  <button
+  className="is-link no-background underline-on-hover is-primary"
+  onClick={() =>
+    setCommentVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [blog.id]: !prevVisibility[blog.id],
+    }))
+  }
+>
+  {commentVisibility[blog.id] ? "Hide" : "Comment"}
+</button>
+
                   </div>
                 </div>
 
@@ -216,7 +219,7 @@ const Blogs = () => {
                   >
                     <div className="field has-addons">
                       <div className="control is-expanded">
-                       
+
                         <input
                           className="input"
                           type="text"

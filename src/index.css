@@ -43,3 +43,32 @@ code {
 .fa-star {
   font-size: 30px!important;
 }
+.container {
+  padding: 30px;
+}
+.underline-on-hover {
+  text-decoration: none;
+}
+
+.underline-on-hover:hover {
+  text-decoration: underline;
+}
+.no-background {
+  background-color: transparent;
+  border: none;
+}
+
+.no-background:hover {
+  text-decoration: underline;
+}
+
+.centered-text {
+  display: flex;
+  justify-content: center;
+}
+
+.centered-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
