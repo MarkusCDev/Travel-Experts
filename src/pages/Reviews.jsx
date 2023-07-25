@@ -84,9 +84,17 @@ const Reviews = () => {
       await updateDoc(dref, {
         uid: docRef.id,
       });
+
+       const prodata = {
+         uid: docRef.id,
+         location: data.location.name,
+         rating: data.rating,
+         content: data.content,
+        };
+
       const userRef = doc(db, "Users", user.email);
       await updateDoc(userRef, {
-        reviews: arrayUnion(docRef.id),
+        reviews: arrayUnion(prodata),
       });
     } catch (error) {
       console.log("An error occured when creating a new review:", error);

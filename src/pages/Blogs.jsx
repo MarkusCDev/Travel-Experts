@@ -48,6 +48,9 @@ const Blogs = () => {
     });
   };
 
+
+
+
   const handleAddBlog = async (e) => {
     e.preventDefault();
     try {
@@ -64,9 +67,18 @@ const Blogs = () => {
       await updateDoc(dref, {
         uid: docRef.id,
       });
+
+        const prodata = {
+          uid: docRef.id,
+          title: blogTitle,
+          mediaurl: imgUrl,
+          email: user.email,
+          msg: blogMsg,
+        };
+
       const userRef = doc(db, "Users", user.email);
       await updateDoc(userRef, {
-        blogs: arrayUnion(docRef.id),
+        blogs: arrayUnion(prodata),
       });
       alert("Added Post");
     } catch (error) {

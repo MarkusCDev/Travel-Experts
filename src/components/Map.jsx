@@ -14,7 +14,7 @@ const Map = ({ position }) => {
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+      {/* <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
         <input
           ref={inputRef}
           type="text"
@@ -23,7 +23,7 @@ const Map = ({ position }) => {
           placeholder="Format: latitude, longitude"
           onChange={handleInputChange}
         />
-      </div>
+      </div> */}
       <div style={{ height: "400px", width: "600px" }}>
         <GoogleMap
           mapContainerStyle={{ height: "100%", width: "100%" }}
