@@ -39,14 +39,14 @@ const ChatGpt = ({ onLocationReceived }) => {
           </div>
         </div>
       </form>
-      <div className="location-buttons">
+
+      <div className="location-buttons" style={{ marginTop: "15px" }}>
         {locations.map((location) => (
           <button
             key={location.name}
-            onClick={() =>
-              onLocationReceived({ lat: location.lat, lng: location.lng })
-            }
+            onClick={() => onLocationReceived({ lat: location.lat, lng: location.lng })}
             className="button is-link is-light"
+            style={{ display: "block", marginBottom: "10px", width: "95%" }}
           >
             {location.name}
           </button>
@@ -57,3 +57,4 @@ const ChatGpt = ({ onLocationReceived }) => {
 };
 
 export default ChatGpt;
+
