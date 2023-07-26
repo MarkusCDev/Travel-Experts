@@ -192,7 +192,7 @@ const Blogs = () => {
                 </div>
               </form>
             </section>
-            <footer className="modal-card-foot">
+            <footer className="modal-card-foot"></footer>
               <button
                 className="button is-primary"
                 type="submit"
@@ -206,12 +206,12 @@ const Blogs = () => {
             </footer>
           </div>
         </div>
-            <div class="columns is-centered">
-             <div class="column is-half">
+            <div className="columns is-centered">
+             <div className="column is-half">
               {blogs.map((blog) => (
-                <div key={blog.id} class="card mb-5">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
+                <div key={blog.id} className="card mb-5">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
                       {blog.mediaurl.includes(".mp4") ? (
                         <video controls style={{ width: "100%", height: "auto" }}>
                           <source src={blog.mediaurl} type="video/mp4" />
@@ -230,15 +230,15 @@ const Blogs = () => {
                       )}
                     </figure>
                   </div>
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content has-text-centered">
-                        <p class="title is-3">{blog.title}</p>
-                        <p class="subtitle is-6">@{blog.email}</p>
+                  <div className="card-content">
+                    <div className="media">
+                      <div className="media-content has-text-centered">
+                        <p className="title is-3">{blog.title}</p>
+                        <p className="subtitle is-6">@{blog.email}</p>
                       </div>
                     </div>
 
-                    <div class="content is-size-4">
+                    <div className="content is-size-4">
                       {blog.msg}
                       <br />
                     </div>
