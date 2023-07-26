@@ -6,6 +6,7 @@ import { db } from "../firebase";
 import GeoPoint from 'geopoint';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from '@fortawesome/free-solid-svg-icons'
+import moment from 'moment/moment';
 
 const Reviews = () => {
   const auth = getAuth();
@@ -21,20 +22,7 @@ const Reviews = () => {
   };
 
   function formatDate(timestamp) {
-    const date = new Date(timestamp);
-
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
-
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const seconds = date.getSeconds().toString().padStart(2, "0");
-
-    const formattedDate = `${month}-${day}-${year}`;
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
-
-    return `${formattedDate} ${formattedTime}`;
+    return moment(timestamp).fromNow();
   }
 
   const blankNewReview = () => ({
