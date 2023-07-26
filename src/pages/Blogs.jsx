@@ -192,7 +192,7 @@ const Blogs = () => {
                 </div>
               </form>
             </section>
-            <footer className="modal-card-foot"></footer>
+            <footer className="modal-card-foot">
               <button
                 className="button is-primary"
                 type="submit"
