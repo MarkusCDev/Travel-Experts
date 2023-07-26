@@ -60,80 +60,6 @@ const Account = () => {
     retdata();
   }
 
-  // return (
-  //   <div>
-  //     <div>
-  //       <h1>Hello {user?.email}!</h1>
-  //     </div>
-  //     {loading ? (
-  //       <div>Loading blog and review data...</div>
-  //     ) : (
-  //       <div className="has-text-centered">
-  //         <div className="box">
-  //         <div>Blog Data</div>
-  //         <table className="table">
-  //           <thead>
-  //             <tr>
-  //               <th>Title</th>
-  //               <th>Image</th>
-  //               <th>Descrip.</th>
-  //               <th>Delete</th>
-  //             </tr>
-  //           </thead>
-  //           <tbody>
-  //             {blogs.map((blog) => (
-  //               <tr key={blog.id}>
-  //                 <td>{blog?.title}</td>
-  //                 <td>
-  //                   <img
-  //                     src={blog?.mediaurl}
-  //                     height="100"
-  //                     width="100"
-  //                     alt="Blog"
-  //                   />
-  //                 </td>
-  //                 <td>{blog?.msg}</td>
-  //                 <td>
-  //                   <button onClick={() => deleteBlog(blog?.uid)}>
-  //                     Delete
-  //                   </button>
-  //                 </td>
-  //               </tr>
-  //             ))}
-  //           </tbody>
-  //         </table>
-
-  //         <div>Review Data</div>
-  //         <table className="table">
-  //           <thead>
-  //             <tr>
-  //               <th>Location</th>
-  //               <th>content</th>
-  //               <th>Rating</th>
-  //               <th>Delete</th>
-  //             </tr>
-  //           </thead>
-  //           <tbody>
-  //             {reviews.map((review) => (
-  //               <tr key={review.id}>
-  //                 <td>{review?.location}</td>
-  //                 <td>{review?.content}</td>
-  //                 <td>{review?.rating}</td>
-  //                 <td>
-  //                   <button onClick={() => deleteReview(review?.uid)}>
-  //                     Delete
-  //                   </button>
-  //                 </td>
-  //               </tr>
-  //             ))}
-  //           </tbody>
-  //         </table>
-  //         </div>
-  //       </div>
-  //     )}
-  //   </div>
-  // );
-
  return (
    <div>
      {/* <div>
@@ -144,7 +70,7 @@ const Account = () => {
          Loading blog and review data...
        </div>
      ) : (
-       <div className="has-text-centered mt-5">
+       <div className="has-text-centered mt-6">
          {blogs.length > 0 ? (
            <div className="columns is-centered">
              <div className="column is-one-third">

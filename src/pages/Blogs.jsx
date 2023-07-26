@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faComment } from "@fortawesome/free-solid-svg-icons";
+import bubble from "../icons/message.png"
+import hide from "../icons/hide.png"
+import dotarrow from "../icons/dotarrow.png"
 import { storage, db } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
@@ -203,8 +206,112 @@ const Blogs = () => {
             </footer>
           </div>
         </div>
+            <div class="columns is-centered">
+             <div class="column is-half">
+              {blogs.map((blog) => (
+                <div key={blog.id} class="card mb-5">
+                  <div class="card-image">
+                    <figure class="image is-4by3">
+                      {blog.mediaurl.includes(".mp4") ? (
+                        <video controls style={{ width: "100%", height: "auto" }}>
+                          <source src={blog.mediaurl} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <img
+                          src={blog.mediaurl}
+                          alt="Blog Media"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      )}
+                    </figure>
+                  </div>
+                  <div class="card-content">
+                    <div class="media">
+                      <div class="media-content has-text-centered">
+                        <p class="title is-3">{blog.title}</p>
+                        <p class="subtitle is-6">@{blog.email}</p>
+                      </div>
+                    </div>
 
-        <div className="columns is-centered is-multiline has-shadow has-border">
+                    <div class="content is-size-4">
+                      {blog.msg}
+                      <br />
+                    </div>
+                    <div>
+                      <div className="control">
+                        <button
+                          className="is-link no-background underline-on-hover is-primary"
+                          onClick={() =>
+                            setCommentVisibility((prevVisibility) => ({
+                              ...prevVisibility,
+                              [blog.id]: !prevVisibility[blog.id],
+                            }))
+                          }
+                        >
+                          {commentVisibility[blog.id] ? (
+                            <img src={hide} height="30px" width="30px" alt="Hide" />
+                          ) : (
+                            <img
+                              src={bubble}
+                              height="30px"
+                              width="30px"
+                              alt="Comment"
+                            />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {commentVisibility[blog.id] && (
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          handleAddComment(blog.id, e.target.comment.value);
+                          e.target.comment.value = "";
+                        }}
+                      >
+                        <div className="field has-addons">
+                          <div className="control is-expanded">
+                            <input
+                              className="input"
+                              type="text"
+                              name="comment"
+                              placeholder="Add a comment"
+                              required
+                            />
+                          </div>
+                          <div className="control">
+                            <button className="button is-primary" type="submit">
+                              Add Comment
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    )}
+
+                    {commentVisibility[blog.id] && (
+                      <ul>
+                        {comments[blog.id] &&
+                          comments[blog.id].map((comment, index) => (
+                            <li className="ml-1 mt-1" key={index}>
+                              <img src={dotarrow} width="10px" height="10px" />
+                              {comment}
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        {/* <div className="columns is-centered is-multiline has-shadow has-border">
           {blogs.map((blog) => (
             <div key={blog.id} className="column is-8">
               <div className="box has-shadow has-border-cyan">
@@ -241,7 +348,7 @@ const Blogs = () => {
                         }))
                       }
                     >
-                      {commentVisibility[blog.id] ? "Hide" : "Comment"}
+                      {commentVisibility[blog.id] ? <img src={hide} height="30px" width="30px" alt="Hide" /> : <img src={bubble} height="30px" width="30px" alt="Comment" />}
                     </button>
                   </div>
                 </div>
@@ -276,14 +383,15 @@ const Blogs = () => {
                   <ul>
                     {comments[blog.id] &&
                       comments[blog.id].map((comment, index) => (
-                        <li key={index}>{comment}</li>
+                        <li className="ml-1 mt-1" key={index}><img src={dotarrow} width="10px" height="10px"/>
+                        {comment}</li>
                       ))}
                   </ul>
                 )}
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

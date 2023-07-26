@@ -4,11 +4,14 @@ import axios from "axios";
 const ChatGpt = ({ onLocationReceived }) => {
   const [prompt, setPrompt] = useState("");
   const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [finding, setFinding] = useState("Enter any geological feature!")
   const HTTP = `${window.location.protocol}//${window.location.hostname}:8020/chat`;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
+    setFinding("Loading Results...")
+    await axios
       .post(`${HTTP}`, { prompt })
       .then((res) => {
         setLocations(res.data);
@@ -16,6 +19,7 @@ const ChatGpt = ({ onLocationReceived }) => {
       .catch((error) => {
         console.log(error);
       });
+    setLoading(false);
   };
 
   return (
@@ -39,7 +43,10 @@ const ChatGpt = ({ onLocationReceived }) => {
           </div>
         </div>
       </form>
-
+      {loading ? (
+        <div className="has-text-centered mt-3"> 
+          {finding}
+        </div>) : (
       <div className="location-buttons" style={{ marginTop: "15px" }}>
         {locations.map((location) => (
           <button
@@ -52,6 +59,7 @@ const ChatGpt = ({ onLocationReceived }) => {
           </button>
         ))}
       </div>
+        )}
     </div>
   );
 };

@@ -20,6 +20,23 @@ const Reviews = () => {
     setModalVisible((prev) => !prev);
   };
 
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+
+    const formattedDate = `${month}-${day}-${year}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return `${formattedDate} ${formattedTime}`;
+  }
+
   const blankNewReview = () => ({
     location: {
       latitude: searchParams.get("latitude") || 0,
@@ -306,7 +323,6 @@ const Reviews = () => {
       </div>
 
       <div className="container">
-        <h1 className="title">Reviews</h1>
         {reviews.map((review) => {
           const data = review.data();
 
@@ -328,9 +344,11 @@ const Reviews = () => {
                   ))}
                 </span>
               </h2>
-              <div>User: {data.userId}</div>
-              <div>Created: {data.createdAt}</div>
-              <div>{data.content}</div>
+              <div className='is-size-6'>User: {data.userId}</div>
+              <div className='is-size-6'>Created: {formatDate(data.createdAt)}</div>
+              <div className="mt-3 is-size-5" style={{ color: "#032633" }}>
+                {data.content}
+              </div>
             </div>
           );
         })}
