@@ -29,14 +29,6 @@ code {
   box-shadow: 0 10px 4px rgba(103, 151, 160, 0.1); /* Optional: Adds a shadow */
 }
 
-.fa-star.rating:hover {
-  color: blue!important;
-}
-
-.fa-star.selection {
-  color: cyan;
-}
-
 .fa-star.checked {
   color: orange;
 }

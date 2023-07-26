@@ -128,7 +128,6 @@ const Reviews = () => {
   const starClass = value => {
     let className = "fa fa-star rating";
 
-    if (starHover >= (value)) className += ' selection';
     if (newReview.rating >= (value)) className += ' checked';
 
     return className;
