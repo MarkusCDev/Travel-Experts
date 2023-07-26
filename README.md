@@ -1,6 +1,5 @@
 # Travel Experts
-A website deisnged to use the power of AI in order to recommend and visually map places to visit based on user input. <br />
-Users can also share their expierences with one another through blogs and reviews.
+A website deisnged to use the power of AI in order to recommend and visually map places to visit based on user input. Users can also share their expierences with one another through blogs and reviews.
 
 ## Live application
 http://digitalotion.com
