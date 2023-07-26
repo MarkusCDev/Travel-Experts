@@ -50,13 +50,13 @@ const Login = () => {
                     />
                   </div>
                 </div>
-                <div class="column">
-                  <button class="button is-primary is-fullwidth" type="submit">
+                <div className="column">
+                  <button className="button is-primary is-fullwidth" type="submit">
                     Login
                   </button>
                 </div>
-                <div class="has-text-centered">
-                  <p class="is-size-6">
+                <div className="has-text-centered">
+                  <p className="is-size-6">
                     Don't have an account?<Link to="/signup"> Sign up</Link>
                   </p>
                 </div>
