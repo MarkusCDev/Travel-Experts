@@ -10,6 +10,7 @@ const ChatGpt = ({ onLocationReceived }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     setFinding("Loading Results...")
     await axios
       .post(`${HTTP}`, { prompt })
@@ -43,15 +44,14 @@ const ChatGpt = ({ onLocationReceived }) => {
           </div>
         </div>
       </form>
-      {loading ? (
-        <div className="has-text-centered mt-3"> 
-          {finding}
-        </div>) : (
+      {loading ? <div className="has-text-centered mt-3">{finding}</div> : ""}
       <div className="location-buttons" style={{ marginTop: "15px" }}>
         {locations.map((location) => (
           <button
             key={location.name}
-            onClick={() => onLocationReceived({ lat: location.lat, lng: location.lng })}
+            onClick={() =>
+              onLocationReceived({ lat: location.lat, lng: location.lng })
+            }
             className="button is-link is-light"
             style={{ display: "block", marginBottom: "10px", width: "95%" }}
           >
@@ -59,7 +59,6 @@ const ChatGpt = ({ onLocationReceived }) => {
           </button>
         ))}
       </div>
-        )}
     </div>
   );
 };
