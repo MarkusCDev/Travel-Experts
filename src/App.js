@@ -3,7 +3,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import { UserAuthContextProvider } from './components/UserAuth';
 import Home from './pages/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Blogs from './pages/Blogs';
 import Account from './pages/Account';
@@ -26,6 +26,7 @@ function App() {
             <Route path="/blogs" element={<ProtectedRoute> <Blogs /> </ProtectedRoute>} />
             <Route path="/account" element={<ProtectedRoute> <Account /> </ProtectedRoute>} />
             <Route path="/reviews" element={<ProtectedRoute> <Reviews /> </ProtectedRoute>} />
+            <Route path="*" element={<Navigate to='/'></Navigate>}></Route>
           </Routes>
         </div>
         <Footer />
