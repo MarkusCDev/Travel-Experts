@@ -39,45 +39,45 @@ const Signup = () => {
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-one-third">
-            <h1 className="title">Sign Up</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="field">
-                <label className="label">Email</label>
-                <div className="control">
-                  <input
-                    className="input"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+            <div className="box">
+              <h1 className="title has-text-centered">Sign Up</h1>
+              <form onSubmit={handleSubmit}>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="field">
-                <label className="label">Password</label>
-                <div className="control">
-                  <input
-                    className="input"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                <div className="field">
+                  <label className="label">Password</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="field is-grouped">
-                <div className="control">
-                  <button className="button is-primary" type="submit">
+                <div class="column">
+                  <button class="button is-primary is-fullwidth" type="submit">
                     Sign Up
                   </button>
                 </div>
-                <div className="control">
-                  <button className="button is-text">
-                    <Link to="/login">Login Here</Link>
-                  </button>
+                <div class="has-text-centered">
+                  <p class="is-size-6">
+                    Already have an account?<Link to="/signup"> Login</Link>
+                  </p>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ const ChatGpt = ({ onLocationReceived }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container has-text-centered">
       <h1 className="title">AI Destination Recommendation</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="field has-addons">
@@ -53,7 +53,7 @@ const ChatGpt = ({ onLocationReceived }) => {
               onLocationReceived({ lat: location.lat, lng: location.lng })
             }
             className="button is-link is-light"
-            style={{ display: "block", marginBottom: "10px", width: "95%" }}
+            style={{ display: "block", marginBottom: "10px", width: "100%" }}
           >
             {location.name}
           </button>
